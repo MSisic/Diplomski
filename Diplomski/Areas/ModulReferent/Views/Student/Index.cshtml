@@ -1,0 +1,45 @@
+﻿@using Diplomski.Areas.ModulReferent.Models.Student
+@model Diplomski.Areas.ModulReferent.Models.Student.StudentPrikaziVM
+
+<h2>Lista studenata na Fakultetu informacijkih tehnologija</h2>
+
+<form>
+    <div class="form-inline ">
+        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control" })
+
+        <input type="submit" value="Prikaži" class="btn btn-info" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Ime</td>
+            <td>Prezime</td>
+            <td>Broj indeksa</td>
+            <td>Slika</td>
+            <td>Detalji</td>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (StudentPrikaziVM.StudentInfo S in Model.studenti)
+        {
+        <tr>
+            
+            <td>@S.Ime</td>
+            <td>@S.Prezime</td>
+            <td>@S.BrojDosijea</td>
+         @*   src="@(Url.Content(S.SlikaPath))"*@
+            <td><img src="@(Url.Content(S.SlikaPath))" width="100" height="100"  /></td>
+            <td>
+                <a href="/ModulReferent/student/Uredi/?id=@S.Id" class="btn btn-info">Uredi</a>
+                <a href="/ModulReferent/student/Detalji/?Id=@S.Id" class="btn btn-info">Detalji</a>
+                <a href="/ModulReferent/student/SlusaPredmete/?id=@S.Id" class="btn btn-primary">Predmeti</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+</table>
+<a href="/ModulReferent/Student/Dodaj" class="btn btn-primary">Dodaj studenta</a>
+

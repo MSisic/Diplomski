@@ -1,0 +1,49 @@
+﻿@*<div class="container" style="width: 300px">
+
+        @using (Html.BeginForm("Provjera", "Login", FormMethod.Get))
+        {
+            <h2 class="form-signin-heading">Logiranje na sistem</h2>
+
+            <input type="text" class="form-control" name="username" id="username" placeholder="korisničko ime" required autofocus />
+
+            <input type="password" class="form-control" id="password" name="password" placeholder="Lozinka" required />
+
+
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Prijavi se</button>
+        }
+    </div>*@
+
+
+@{
+    ViewBag.Title = "Login";
+
+}
+@using (Html.BeginForm("Provjera", "Login", new { @class = "form-signin" }))
+{
+    <div class="container-fluid">
+        <div class="card card-login mx-auto mt-5">
+            <div class="card-header">Sistem za evidenciju prisustva na FIT-u</div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Broj dosijea: </label>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Korisničko ime" value="testtest">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Lozinka</label>
+                        <input class="form-control" id="password" name="password" placeholder="Lozinka" type="password" value="testtest">
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Prijava</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+}

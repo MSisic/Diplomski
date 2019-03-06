@@ -1,0 +1,55 @@
+﻿@model Diplomski.Areas.ModulReferent.Models.NastavnoOsoblje.NastavnoOsobljeDodajVM
+
+
+<h2>Dodavanje nastavnog osoblja</h2>
+@using (Html.BeginForm("Spremi", "NastavnoOsoblje", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        <label for="titula">Titula:</label>
+        @Html.TextBoxFor(model => model.Titula, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Titula)
+    </div>
+
+    <div class="form-group">
+        <label for="ime">Ime:</label>
+        @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Ime)
+    </div>
+
+    <div class="form-group">
+        <label for="prezime">Prezime:</label>
+        @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Prezime)
+    </div>
+
+    <div class="form-group">
+        <label for="korisnickoIme">Korisničko ime:</label>
+        @Html.TextBoxFor(model => model.KorisnickoIme, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.KorisnickoIme)
+    </div>
+
+    <div class="form-group">
+        <label for="ulogaId">Uloga: </label>
+        @Html.DropDownListFor(model => model.UlogaId, Model.uloge, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email: </label>
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+
+    <div class="form-group">
+        <label for="lozinka">Lozinka: </label>
+        @Html.PasswordFor(model => model.Lozinka, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Lozinka)
+    </div>
+    <div>
+        @Html.ValidationSummary()
+    </div>
+    <div>
+        <input type="submit" name="Spremi" value="Spremi" class="btn btn-primary btn-lg" />
+    </div>
+}
+

@@ -1,0 +1,41 @@
+﻿@*@{
+        //Layout = null;
+        ViewBag.Title = "Početna";
+    }
+
+    <h1>Aplikacija za evidenciju prisustva studenata na nastavi i ispitima na FIT-u</h1>
+
+    <a href="/ModulReferent/Student" class="btn btn-info">Evidencija studenata</a>
+    <a href="/ModulReferent/NastavnoOsoblje" class="btn btn-info">Evidencija nastavnog osoblja</a>
+    <a href="/ModulReferent/Predmet" class="btn btn-info">Evidencija predmeta</a>
+    <a href="/ModulNastavnoOsoblje/Aktivnost" class="btn btn-info">Evidencija Aktivnosti</a>*@
+
+
+
+@model Diplomski.Models.Korisnik
+@if (Model.Uloga.Naziv != "Administrator")
+{
+    if (Model.Uloga.Naziv == "Student")
+    {
+        <a href="/ModulStudent/Home" class="btn btn-lg btn-outline-primary">Student</a>
+    }
+
+    if (Model.Uloga.Naziv == "Profesor" || Model.Uloga.Naziv == "Asistent")
+    {
+        <a href="/ModulNastavnoOsoblje/Home" class="btn btn-lg btn-outline-primary">Nastavno osoblje</a>
+    }
+
+    if (Model.Uloga.Naziv == "Referent")
+    {
+        <a href="/ModulReferent/Home" class="btn btn-lg btn-outline-primary">Referent</a>
+    }
+}
+@if (Model.Uloga.Naziv == "Administrator")
+{
+    <a href="/ModulStudent/Home" class="btn btn-lg btn-outline-primary">Student</a>
+    <a href="/ModulNastavnoOsoblje/Home" class="btn btn-lg btn-outline-primary">Nastavno osoblje</a>
+    <a href="/ModulReferent/Home" class="btn btn-lg btn-outline-primary">Referent</a>
+}
+
+
+

@@ -1,0 +1,94 @@
+﻿@using Diplomski.Models
+@model Diplomski.Areas.ModulReferent.Models.Student.StudentDodajVM
+
+
+
+<h2>Dodavanje studenta</h2>
+@using (Html.BeginForm("Spremi", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+  
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group  ">
+        <label for="ime">Ime:</label>
+        @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Ime)
+    </div>
+
+    <div class="form-group ">
+        <label for="prezime">Prezime:</label>
+        @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Prezime)
+
+    </div>
+
+    <div class="form-group ">
+        <label for="indeks">Broj indeksa:</label>
+        @Html.TextBoxFor(model => model.BrojDosijea, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BrojDosijea)
+
+    </div>
+
+    <div class="form-group ">
+        <label for="rfid">RFID: </label>
+        @Html.TextBoxFor(model => model.RFID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RFID)
+
+    </div>
+
+    <div class="form-group ">
+        <label for="lozinka">Lozinka: </label>
+        @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", @type = "Password" })
+        @Html.ValidationMessageFor(model => model.Lozinka)
+
+    </div>
+
+    <div class="form-group ">
+        <label for="email">Email: </label>
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Email)
+
+    </div>
+
+
+    <div class="form-group ">
+        <label for="semestar">Semestar: </label>
+        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SemestarId)
+
+    </div>
+
+    <div class="form-group">
+        <label for="slika">Slika:</label>
+        <img id="output_image" style="width:240px; height:240px; border:1px solid #000;" />
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="file" name="SlikaFile" required accept="image/*" onchange="preview_image(event)">
+        </div>
+    </div>
+
+    <div>
+        @Html.ValidationSummary()
+    </div>
+
+    <div class="form-group">
+        <input type="submit" name="Spremi" value="Spremi" class="btn btn-primary" />
+    </div>
+}
+
+
+
+<script type='text/javascript'>
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+

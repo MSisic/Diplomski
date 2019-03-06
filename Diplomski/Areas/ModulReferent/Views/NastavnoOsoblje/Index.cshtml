@@ -1,0 +1,35 @@
+﻿@using Diplomski.Areas.ModulReferent.Models.NastavnoOsoblje
+@model Diplomski.Areas.ModulReferent.Models.NastavnoOsoblje.NastavnoOsobljePrikaziVM
+
+<h2>Nastavno osoblje</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titula</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Email</th>
+            <th>Uloga</th>
+            <th>Predmeti</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (NastavnoOsobljePrikaziVM.NastavnoOsobljeInfo NO in Model.nastavnoOsoblje)
+        {
+            <tr>
+                <td>@NO.Titula</td>
+                <td>@NO.Ime</td>
+                <td>@NO.Prezime</td>
+                <td>@NO.Email</td>
+                <td>@NO.Uloga</td>
+                <td>
+                    <a href="/ModulReferent/nastavnoOsoblje/Uredi/?id=@NO.Id" class="btn btn-info">Uredi</a>
+                    <a href="/ModulReferent/nastavnoOsoblje/prikaziPredmete/?id=@NO.Id" class="btn btn-info">Predmeti</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<a href="/ModulReferent/NastavnoOsoblje/Dodaj" class="btn btn-info">Dodaj nastavno osoblje</a>

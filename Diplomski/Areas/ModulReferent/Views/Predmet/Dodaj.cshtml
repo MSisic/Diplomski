@@ -1,0 +1,51 @@
+﻿@model Diplomski.Areas.ModulReferent.Models.Predmet.PredmetDodajVM
+
+<h2>Dodavanje predmeta</h2>
+<form action="/ModulReferent/Predmet/Spremi">
+
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        <label for="oznaka">Oznaka premeta:</label>
+        @Html.TextBoxFor(model => model.Oznaka, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Oznaka)
+    </div>
+
+    <div class="form-group">
+        <label for="naziv">Naziv premeta:</label>
+        @Html.TextBoxFor(model => model.Naziv, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Naziv)
+    </div>
+
+    <div class="form-group">
+        <label for="ects">ECTS: </label>
+        @Html.TextBoxFor(model => model.ECTS, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ECTS)
+    </div>
+
+    <div class="form-group">
+        <label for="semestar">Semestar: </label>
+        @Html.DropDownListFor(model => model.SemestarId, Model.semestri, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SemestarId)
+    </div>
+
+    <div class="form-group">
+        <label for="profesor">Profesor:</label>
+        @Html.DropDownListFor(model => model.profesorId, Model.profesori, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.profesorId)
+    </div>
+
+    <div class="form-group">
+        <label for="asistent">Asistent:</label>
+        @Html.DropDownListFor(model => model.asistentId, Model.asistenti, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.asistentId)
+
+    </div>
+    <div>
+        @Html.ValidationSummary()
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Spremi" class="btn btn-primary" style="width:250px" />
+    </div>
+
+</form>
