@@ -17,11 +17,13 @@ namespace Diplomski.Areas.ModulReferent.Models.Predmet
             public string Semestar { get; set; }
             public string Profesor { get; set; }
             public string Asistent { get; set; }
-
+            public int BrojStudenata { get; set; }
+            public int BrojAktivnosti { get; set; }
         }
         public List<PredmetInfo> predmeti { get; set; }
         public List<SelectListItem> semestriStavke { get; set; }
         public PredmetInfo predmet { get; set; }
+        public string Edukator { get; set; }
         public int SemestarId { get; set; }
     }
 }

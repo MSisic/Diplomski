@@ -1,0 +1,40 @@
+﻿@using Diplomski.Areas.ModulReferent.Models
+@model Diplomski.Areas.ModulReferent.Models.Predmet.PredmetPrikaziVM
+
+<h2>Detalji o predmetu</h2>
+<hr>
+<form>
+    <table class="table table-borderless" style="color:black">
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">Oznaka predmeta:</label></td>
+            <td>@Model.predmet.Oznaka</td>
+        </tr>
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">Naziv predmeta:</label></td>
+            <td>@Model.predmet.Naziv</td>
+        </tr>
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">ECTS:</label></td>
+            <td>@Model.predmet.ECTS</td>
+        </tr>
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">Semestar:</label></td>
+            <td>@Model.predmet.Semestar</td>
+        </tr>
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">Profesor:</label></td>
+            <td>@Model.predmet.Profesor</td>
+        </tr>
+        <tr>
+            <td><label style="text-decoration-style:double;font-weight:bold">Asistent:</label></td>
+            <td>@Model.predmet.Asistent</td>
+        </tr>
+       
+        <tr >
+            <td></td>
+            <td>
+                <a href="/ModulReferent/Predmet/Uredi/?predmetId=@Model.predmet.Id" class="btn btn-primary" style="width:250px">Uredi</a>
+            </td>
+        </tr>
+    </table>
+</form>

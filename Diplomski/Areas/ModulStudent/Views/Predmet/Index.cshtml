@@ -1,0 +1,72 @@
+﻿@using Diplomski.Areas.ModulStudent.Models
+
+@model Diplomski.Areas.ModulStudent.Models.StudentPredmetPrikaziVM
+
+<h2>Predmeti na Fakultetu informacijskih tehnologija koje sluša @Model.Student</h2>
+<hr>
+<form>
+     <div class="form-inline" style="margin-bottom:20px">
+        <label style="font-weight:bold;font-size:21px;margin-right:10px">Semestri:</label>
+         @Html.HiddenFor(model=>Model.StudentID)
+        @Html.DropDownListFor(model => model.SemestarId, Model.Semestri, new { @class = "form-control", @onchange = "this.form.submit()" })
+    </div>
+</form>
+<br >
+<div class="table-responsive">
+    <table class="table table-sm table-hover " style="color:black">
+        <thead class="table-warning">
+            <tr>
+                <th colspan="5" style="font-weight:bold;font-size:20px;">Nepoloženi predmeti</th>
+            </tr>
+            <tr>
+                <th>Predmet</th>
+                <th>Semestar</th>
+                <th>Postotak prisustva</th>
+                <th>Odslušan</th>
+                <th>Akcija</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var x in Model.NepolozeniPredmeti)
+            {
+                <tr>
+                    <td>@x.Predmet</td>
+                    <td>@x.Semestar</td>
+                    <td>@x.PostotakPrisustva</td>
+                    <td>@(x.IsOdslusan == true ? "DA" : "NE")</td>
+                    <td><a href="/modulEdukatori/Predmet/DetaljanPrikaz/?predmetId=@x.Id&&studentId=@Model.StudentID" class="btn btn-info btn-sm">Detaljan uvid</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover " style="text-align:center">
+        <thead class="table-success">
+            <tr>
+                <th colspan="4" style="font-weight:bold;font-size:20px;">Položeni predmeti</th>
+            </tr>
+            <tr>
+                <th>Predmet</th>
+                <th>Semestar</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var x in Model.PolozeniPredmeti)
+            {
+                <tr>
+                    <td>@x.Predmet</td>
+                    <td>@x.Semestar</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+

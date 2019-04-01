@@ -1,0 +1,47 @@
+﻿@using Diplomski.Areas.ModulEdukatori.Models
+@model Diplomski.Areas.ModulEdukatori.Models.SpisakStudenataVM
+
+<div id="print">
+<h2>Spisak Studenata na @Model.Aktivnost</h2>
+    
+    <hr />
+<div class="table-responsive">
+    <table class="table table-hover " style="color:black">
+        <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Prisustvo</th>
+                <th>Vrijeme dolaska</th>
+                <th>Vrijeme odlaska</th>
+            </tr>
+        </thead>
+        <tbody style="color:black">
+            @foreach (SpisakStudenataVM.StudentInfo x in Model.studenti)
+            {
+            <tr style="background:@(x.IsPrisustvovao==true?"lightgreen":"tomato")">
+                <td>@x.Ime</td>
+                <td>@x.Prezime</td>
+                <td>@(x.IsPrisustvovao == true ? "DA" : "NE")</td>
+                <td>@(x.IsPrisustvovao == true ? x.VrijemeDolaska.ToString("hh\\:mm") : "--:--")</td>
+                <td>@(x.IsPrisustvovao == true ? x.VrijemeOdlaska.ToString("hh\\:mm") : "--:--")</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>
+<button onclick="PrintRadGrid('print')" style="float:right;width:120px" class="btn btn-lg btn-secondary">Print</button>
+
+<script>
+    function PrintRadGrid(print) {
+
+        debugger;
+        var divToPrint = document.getElementById(print);
+        var newWin = window.open('PrintDiv', 'Print-Window', 'width=920,height=750,top=100,left=100');
+        newWin.document.open();
+        newWin.document.write('<html><title>Invitation Status</title><head><style>#in {display:none}</style><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

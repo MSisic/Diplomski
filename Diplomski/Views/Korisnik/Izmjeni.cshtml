@@ -1,0 +1,80 @@
+﻿@using Diplomski.Models
+@model Diplomski.Models.ViewModels.KorisnikIzmjeniVM
+
+<div>
+
+    <hr />
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <h2>Profil @Model.Titula @Model.Ime @Model.Prezime</h2>
+                </th>
+            </tr>
+            <tr @(Model.IsStudent == true ? "" : "hidden")>
+                <th rowspan="7">
+                    <img id="output_image" style="width:240px; height:240px;  border:1px solid #000;" class="rounded mx-auto d-block" src="@Model.SlikaPath" />
+
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ime" style="font-weight:bolder">Ime prezime:</label>
+                    <label> @Model.Titula @Model.Ime @Model.Prezime</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ime" style="font-weight:bolder">Uloga:</label>
+                    <label> @Model.Uloga</label>
+                </td>
+            </tr>
+            <tr @(Model.IsStudent == true ? "" : "hidden")>
+                <td>
+                    <label for="RFID" style="font-weight:bolder">Semestar:</label>
+                    <label>@Model.Semestar</label>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label for="BrojDosijea" style="font-weight:bolder">Broj dosijea:</label>
+                    <label>@Model.BrojDosijea</label>
+                </td>
+            <tr>
+                <td>
+                    <label for="RFID" style="font-weight:bolder">Email:</label>
+                    <label>@Model.Email</label>
+                </td>
+            </tr>
+            </tr>
+            <tr @(Model.IsStudent == true ? "" : "hidden")>
+                <td>
+                    <label for="RFID" style="font-weight:bolder">RFID:</label>
+                    <label>@Model.RFID</label>
+                </td>
+            </tr>
+
+
+
+        </thead>
+    </table>
+
+</div>
+
+
+
+
+@*<script type='text/javascript'>
+    function preview_image(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>*@
+

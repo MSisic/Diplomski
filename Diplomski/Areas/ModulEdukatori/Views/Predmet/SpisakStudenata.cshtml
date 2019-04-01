@@ -1,0 +1,64 @@
+﻿@using Diplomski.Areas.ModulEdukatori.Models
+@model Diplomski.Areas.ModulEdukatori.Models.PrikaziSpisakStudenataVM
+    
+<div id="print">
+    <h2>Lista studenata iz predmeta @Model.Predmet</h2>
+    <hr />
+    <div class="table-responsive">
+        <table class="table  table-hover" style="color:black">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Broj sati aktivnosti</th>
+                    <th>Broj sati prisustva</th>
+                    <th>Postotak prisustva</th>
+                    <th>Odslušan</th>
+                    <th>Akcija</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (PrikaziSpisakStudenataVM.PredmetiInfo x in Model.predmeti)
+                {
+                    <tr>
+                        <td>@x.student</td>
+                        <td>@x.BrojSatiAktivnosti</td>
+                        <td>@x.BrojSatiPrisustva</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar bg-@(x.PostotakPrisustva > 60 ? "success" : "danger")" role="progressbar" aria-valuenow="@(x.PostotakPrisustva)"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@x.PostotakPrisustva%">
+                                    @x.PostotakPrisustva %
+                                </div>
+                            </div>
+                        </td>
+                        <td>@(x.IsOdslusan == true ? "DA" : "NE")</td>
+                        <td>
+
+                            <a href="/modulEdukatori/Predmet/DodijeliPrisustvo/?predmetId=@Model.PredmetId&&studentId=@x.id" class="btn btn-success btn-sm">Dodijeli prisustvo</a>
+
+                            <a href="/modulEdukatori/Predmet/PolozenPredmet/?predmetId=@Model.PredmetId&&studentId=@x.id" class="btn btn-secondary btn-sm">Položen predmet</a>
+                            <a href="/modulEdukatori/Predmet/DetaljanPrikaz/?predmetId=@Model.PredmetId&&studentId=@x.id" class="btn btn-info btn-sm">Detaljan uvid</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div style="float:right">
+    <button onclick="PrintRadGrid('print')" class="btn btn-lg btn-secondary" style="width:120px;margin-right:20px;">Print</button>
+    <a href="/modulEdukatori/Predmet/zakljuciPredmet/?predmetId=@Model.PredmetId" class="btn btn-primary btn-lg" style="float:right;margin-right:20px;">Zaključi predmet</a>
+</div>
+<script>
+    function PrintRadGrid(print) {
+
+        debugger;
+        var divToPrint = document.getElementById(print);
+        var newWin = window.open('PrintDiv', 'Print-Window', 'width=920,height=750,top=100,left=100');
+        newWin.document.open();
+        newWin.document.write('<html><title>Invitation Status</title><head><style>#in {display:none}</style><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

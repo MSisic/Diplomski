@@ -17,7 +17,27 @@ namespace Diplomski.Controllers
             Korisnik k = Autentifikacija.LogiraniKorisnik;
             if (k == null)
                 return RedirectToAction("Index", "Login");
-            return View(k);
+
+           else if (k.Uloga.Naziv=="Student")
+            {
+                return RedirectToAction("Index", "Home", new { area = "ModulStudent" });
+
+            }
+            else if (k.Uloga.Naziv == "Referent")
+            {
+                return RedirectToAction("Index", "Home", new { area = "ModulReferent" });
+
+            }
+            else if (k.Uloga.Naziv == "Asistent"|| k.Uloga.Naziv == "Profesor")
+            {
+                return RedirectToAction("Index", "Home",new { area = "ModulEdukatori" });
+
+            }
+            else
+            {
+                return View(k);
+
+            }
 
         }
     }

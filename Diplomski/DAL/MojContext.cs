@@ -23,7 +23,7 @@ namespace Diplomski.DAL
         public DbSet<Aktivnost> Aktivnosti { get; set; }
         public DbSet<AktivnostStudent> AktivnostStudent { get; set; }
         public DbSet<SlusaPredmet> SlusaPredmet { get; set; }
-        public DbSet<NastavnoOsoblje> NastavnoOsoblje { get; set; }
+        public DbSet<Edukator> Edukatori { get; set; }
         public DbSet<PredajePredmet> PredajePredmet { get; set; }
         public DbSet<Korisnik> Korisnici { get; set; }
 
@@ -31,7 +31,7 @@ namespace Diplomski.DAL
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Korisnik>().HasOptional(x => x.Student).WithRequired(x => x.Korisnik);
-            modelBuilder.Entity<Korisnik>().HasOptional(x => x.NastavnoOsoblje).WithRequired(x => x.Korisnik);
+            modelBuilder.Entity<Korisnik>().HasOptional(x => x.Edukator).WithRequired(x => x.Korisnik);
 
 
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

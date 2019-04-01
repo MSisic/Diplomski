@@ -1,6 +1,7 @@
 ﻿@model Diplomski.Areas.ModulReferent.Models.Predmet.PredmetDodajVM
 
-<h2>Dodavanje predmeta</h2>
+<h2>Evidencija predmeta</h2>
+<hr>
 <form action="/ModulReferent/Predmet/Spremi">
 
     @Html.HiddenFor(model => model.Id)
@@ -45,7 +46,7 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Spremi" class="btn btn-primary" style="width:250px" />
+        <input type="submit" value="Spremi" class="btn btn-success btn-lg" style="width:250px;float:right" />
     </div>
 
 </form>

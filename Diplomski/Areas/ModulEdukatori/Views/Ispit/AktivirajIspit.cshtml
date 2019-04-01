@@ -1,0 +1,60 @@
+﻿@model Diplomski.Areas.ModulEdukatori.Models.AktivirajAktivnostVM
+
+<h1> @Model.NazivAktivnosti</h1>
+
+<form action="/ModulEdukatori/Aktivnosti/Pretrazi/?rfid=@Model.RFID&aktivnostId=@Model.AktivnostId">
+
+    @Html.HiddenFor(model => model.AktivnostId)
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <img id="output_image" style="width:200px; height:200px; border:1px solid #000;" class="rounded mx-auto d-block" src="@Model.SlikaPath" />
+            <br>
+            <div class="form-inline">
+                <div class="form-inline col-md-2">
+                    <label style="font-size:larger;font-weight:600">Student:</label>
+                </div>
+                <div class="form-inline col-md-10">
+                    @Html.TextBoxFor(model => Model.ImeStudenta, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+
+            </div>
+            <br>
+            <div class="form-inline">
+                <div class="form-inline col-md-2">
+                    <label style="font-size:larger;font-weight:600">RFID:</label>
+                </div>
+                <div class="form-inline col-md-10">
+
+                    @Html.TextBoxFor(model => Model.RFID, new { @class = "form-control", @onfocus = "this.select()", @onchange = "this.form.submit()", @autofocus = "autofocus", })
+                </div>
+
+            </div>
+            @*  *@
+
+        </div>
+        <div class="form-group col-md-6">
+            <table class="table  table-responsive" style="color:white;text-align:center">
+                <tr style="color:black">
+                    <th>Student</th>
+                    <th>Prisutan</th>
+                    <th>Vrijeme dolaska</th>
+                    <th>Akcija</th>
+                </tr>
+                @foreach (var x in Model.studenti)
+                {
+                    <tr style="background:@(x.IsPrisutan==true?"lightgreen":"indianred")">
+                        <td>@x.ImePrezime</td>
+                        <td>@(x.IsPrisutan == true ? "DA" : "NE")</td>
+                        <td>@x.VrijemeDolaska.ToString("hh\\:mm")</td>
+                        <td><a href="/ModulEdukatori/Ispit/UkloniSaPrisustva/?aktivnostId=@Model.AktivnostId&studentId=@x.Id" class="btn btn-warning">Ukloni</a></td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+    <div>
+        <a href="/ModulEdukatori/Aktivnosti/ZavrsiAktivnost/?aktivnostId=@Model.AktivnostId" class="btn btn-danger btn-lg" style="float:right">Završi aktivnost</a>
+    </div>
+</form>
+

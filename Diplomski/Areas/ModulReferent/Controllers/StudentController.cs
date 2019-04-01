@@ -10,6 +10,8 @@ using System.Data.Entity;
 using Diplomski.Helper;
 using System.IO;
 using System.Drawing;
+using System.Data.Entity.Core;
+
 
 namespace Diplomski.Areas.ModulReferent.Controllers
 {
@@ -19,111 +21,210 @@ namespace Diplomski.Areas.ModulReferent.Controllers
    
         public ActionResult Index(int? semestarId)
         {
-            StudentPrikaziVM Model = new StudentPrikaziVM();
-
-            Model.studenti = ctx.Studenti.Where(x => !semestarId.HasValue || x.SemestarId == semestarId)
-                .Select(x => new StudentPrikaziVM.StudentInfo
+            Korisnik korisnik = Autentifikacija.LogiraniKorisnik;
+            if (korisnik == null)
+                return RedirectToAction("Index", "Login", new { area = "" });
+            else
+            {
+                if (korisnik.Uloga.Naziv == "Referent")
                 {
-                    Id = x.Id,
-                    Ime = x.Korisnik.Ime,
-                    Prezime = x.Korisnik.Prezime,
-                    BrojDosijea = x.Korisnik.BrojDosijea,
-                    SlikaPath=x.SlikaPath
-        }).ToList();
+                    StudentPrikaziVM Model = new StudentPrikaziVM();
 
-          
+                    Model.studenti = ctx.Studenti.Where(x => !semestarId.HasValue || x.SemestarId == semestarId)
+                        .Select(x => new StudentPrikaziVM.StudentInfo
+                        {
+                            Id = x.Id,
+                            Ime = x.Korisnik.Ime,
+                            Prezime = x.Korisnik.Prezime,
+                            BrojDosijea = x.Korisnik.BrojDosijea,
+                            Semestar = x.Semestar.GodinaStudija + " - " + x.Semestar.Naziv,
+                            SlikaPath = x.SlikaPath
+                        }).ToList();
 
-            Model.semestriStavke = UcitajSemestre();
-            return View("Index", Model);
+
+
+                    Model.semestriStavke = UcitajSemestre();
+                    return View("Index", Model);
+                }
+                else
+                {
+                    return View("ZabranaPristupa", new { @area = "" });
+                }
+            }
+            
         }
 
         public ActionResult Dodaj()
         {
-            StudentDodajVM Model = new StudentDodajVM();
-            Model.semestriStavke = UcitajSemestre();
-            return View("Dodaj", Model);
+            Korisnik korisnik = Autentifikacija.LogiraniKorisnik;
+            if (korisnik == null)
+                return RedirectToAction("Index", "Login", new { area = "" });
+            else
+            {
+                if (korisnik.Uloga.Naziv == "Referent")
+                {
+                    StudentDodajVM Model = new StudentDodajVM();
+                    Model.semestriStavke = UcitajSemestre();
+                    return View("Dodaj", Model);
+                }
+                else
+                {
+                    return View("ZabranaPristupa", new { @area = "" });
+                }
+            }
+        
         }
 
-        private Image byteArrayToImage(byte[] slikaThumb)
-        {
-            MemoryStream ms = new MemoryStream(slikaThumb);
-            Image returnImage = Image.FromStream(ms);
-            return returnImage;
-        }
+        
 
         public ActionResult Uredi(int id)
         {
-            StudentDodajVM Model = new StudentDodajVM();
-            Student S = ctx.Studenti.Where(x => x.Id == id).Include(x => x.Korisnik).FirstOrDefault();
-            Model.semestriStavke = UcitajSemestre();
-            Model.SemestarId = S.SemestarId;
-            Model.Ime = S.Korisnik.Ime;
-            Model.Prezime = S.Korisnik.Prezime;
-            Model.RFID = S.RFID;
-            Model.Email = S.Korisnik.Email;
-            Model.BrojDosijea = S.Korisnik.BrojDosijea;
-         
+            Korisnik korisnik = Autentifikacija.LogiraniKorisnik;
+            if (korisnik == null)
+                return RedirectToAction("Index", "Login", new { area = "" });
+            else
+            {
+                if (korisnik.Uloga.Naziv == "Referent")
+                {
+                    StudentDodajVM Model = new StudentDodajVM();
+                    Student S = ctx.Studenti.Where(x => x.Id == id).Include(x => x.Korisnik).FirstOrDefault();
+                    Model.semestriStavke = UcitajSemestre(S.Id);
+                    Model.SemestarId = S.SemestarId;
+                    Model.Ime = S.Korisnik.Ime;
+                    Model.Prezime = S.Korisnik.Prezime;
+                    Model.RFID = S.RFID;
+                    Model.Email = S.Korisnik.Email;
+                    Model.BrojDosijea = S.Korisnik.BrojDosijea;
+                    Model.SlikaPath = S.SlikaPath;
+                    Model.SlikaPathHelper = S.SlikaPath;
+                    Model.LozinkaHelper = S.Korisnik.LozinkaHash;
 
 
-            return View("Dodaj", Model);
+                    return View("Dodaj", Model);
+                }
+                else
+                {
+                    return View("ZabranaPristupa", new { @area = "" });
+                }
+            }
+           
         }
 
 
-        private List<SelectListItem> UcitajSemestre()
+       private List<SelectListItem> UcitajSemestre(int? studentId=0)
         {
             List<SelectListItem> semestriStavke = new List<SelectListItem>();
-            semestriStavke.Add(new SelectListItem { Value = null, Text = "Odaberite semestar" });
-            semestriStavke.AddRange(ctx.Semestri.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.GodinaStudija + " -  " + x.Naziv }).ToList());
+            if (studentId == 0)
+            {
+                semestriStavke.Add(new SelectListItem { Value = null, Text = "Svi semestri" });
+                semestriStavke.AddRange(ctx.Semestri
+                    .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.GodinaStudija + " -  " + x.Naziv }).ToList());
+            }
+            else
+            {
+                Student s = ctx.Studenti.Include(x => x.Semestar).Where(x => x.Id == studentId).FirstOrDefault();
+                semestriStavke.AddRange(ctx.Semestri.Where(x=>x.RedniBroj>=s.Semestar.RedniBroj)
+                    .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.GodinaStudija + " -  " + x.Naziv }).ToList());
+
+            }
+
             return semestriStavke;
         }
 
         public ActionResult Spremi(StudentDodajVM student)
         {
-            if (!ModelState.IsValid)
-            {
-                student.semestriStavke = UcitajSemestre();
-                return View("Dodaj", student);
-            }
-            Student S;
-            if (student.Id == 0)
-            {
-                S = new Student();
-                S.Korisnik = new Korisnik();
-                ctx.Studenti.Add(S);
-            }
+            Korisnik korisnik = Autentifikacija.LogiraniKorisnik;
+            if (korisnik == null)
+                return RedirectToAction("Index", "Login", new { area = "" });
             else
             {
-                S = ctx.Studenti.Where(x => x.Id == student.Id).Include(x => x.Korisnik).FirstOrDefault();
+                if (korisnik.Uloga.Naziv == "Referent")
+                {
+                    if (string.IsNullOrEmpty(student.Lozinka) && !string.IsNullOrEmpty(student.LozinkaHelper))
+                    {
+                        student.Lozinka = student.LozinkaHelper;
+                    }
+                    else if (!ModelState.IsValid)
+                    {
+                        student.SlikaPath = student.SlikaPathHelper;
+                        student.semestriStavke = UcitajSemestre();
+                        return View("Dodaj", student);
+                    }
+                  
+                    Student S;
+                    if (student.Id == 0)
+                    {
+                        S = new Student();
+                        S.Korisnik = new Korisnik();
+                        ctx.Studenti.Add(S);
+                    }
+                    else
+                    {
+                        S = ctx.Studenti.Where(x => x.Id == student.Id).Include(x => x.Korisnik).FirstOrDefault();
+                    }
+                    if (string.IsNullOrEmpty(student.SlikaPathHelper)&&student.SlikaFile==null)
+                    {
+                        student.Poruka = "Slika je obavezno polje!";
+                        student.semestriStavke = UcitajSemestre();
+                        return View("Dodaj", student);
+                    }
+                    if (student.SlikaFile != null)
+                    {
+                        string fileName = student.Ime + "-" + student.Prezime + "-" + student.BrojDosijea; ;
+                        string extension = Path.GetExtension(student.SlikaFile.FileName);
+                        fileName = fileName + extension;
+                        student.SlikaPath = "/Slike/" + fileName;
+                        fileName = Path.Combine(Server.MapPath("/Slike/"), fileName);
+                        student.SlikaFile.SaveAs(fileName);
+                        S.SlikaPath = student.SlikaPath;
+                    }
+           
+                  
+                    S.Korisnik.Ime = student.Ime;
+                    S.Korisnik.Prezime = student.Prezime;
+                    S.Korisnik.BrojDosijea = student.BrojDosijea;
+                    S.RFID = student.RFID;
+                    S.SemestarId = student.SemestarId;
+                    if (S.Korisnik.LozinkaHash != student.Lozinka)
+                    {
+                        S.Korisnik.LozinkaSalt = LozinkaGenerator.GenerateSalt();
+                        S.Korisnik.LozinkaHash = LozinkaGenerator.GenerateHash(S.Korisnik.LozinkaSalt, student.Lozinka);
+                    }
+                   
+                    S.Korisnik.Email = student.Email;
+                    S.Korisnik.UlogaId = ctx.Uloge.Where(x => x.Naziv == "Student").FirstOrDefault().Id;
+
+                    try
+                    {
+                        ctx.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+
+                    string poruka = ExceptionHandler.GetConstraintExceptionMessage(ex);
+                        return RedirectToAction("Greska", new { tekst = poruka });
+                    }
+
+                    DodjeliPredmete(S.Id, S.SemestarId);
+                   
+                  
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("ZabranaPristupa", new { @area = "" });
+                }
             }
-
-            string fileName = student.Ime + "-" + student.Prezime + "-" + student.BrojDosijea; ;
-            string extension = Path.GetExtension(student.SlikaFile.FileName);
-            fileName = fileName + extension;
-            student.SlikaPath = "~/Slike/" + fileName;
-            fileName = Path.Combine(Server.MapPath("~/Slike/"), fileName);
-            student.SlikaFile.SaveAs(fileName);         
-            Image orginalnaslika = Image.FromFile(fileName);
-            Image slika = orginalnaslika;
-            MemoryStream ms = new MemoryStream();
-            slika.Save(ms, orginalnaslika.RawFormat);
-            S.SlikaPath = student.SlikaPath;
-            S.Slika = ms.ToArray();
-            //  S.SlikaFile.SaveAs(fileName);
-            S.Korisnik.Ime = student.Ime;
-            S.Korisnik.Prezime = student.Prezime;
-            S.Korisnik.BrojDosijea = student.BrojDosijea;
-            S.RFID = student.RFID;
-            S.SemestarId = student.SemestarId;
-
-            S.Korisnik.LozinkaSalt = LozinkaGenerator.GenerateSalt();
-            S.Korisnik.LozinkaHash = LozinkaGenerator.GenerateHash(S.Korisnik.LozinkaSalt, student.Lozinka);
-            S.Korisnik.Email = student.Email;
-            S.Korisnik.UlogaId = ctx.Uloge.Where(x => x.Naziv == "Student").FirstOrDefault().Id;
-
-            ctx.SaveChanges();
-            DodjeliPredmete(S.Id, S.SemestarId);
-            return RedirectToAction("Index");
+           
         }
+        public ActionResult Greska(string tekst)
+        {
+            ViewData["greska"] = tekst;
+            return View("Greska", new { @area = "" });
+        }
+
+
+
         private void DodjeliPredmete(int id, int semestarId)
         {
             SlusaPredmet PK = new SlusaPredmet

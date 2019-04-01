@@ -13,7 +13,7 @@ namespace Diplomski.Helper
         public static Korisnik LogiraniKorisnik
         {
             get { return (Korisnik)HttpContext.Current.Session["user"]; }
-            set { HttpContext.Current.Session["user"] = value; }
+            set {                HttpContext.Current.Session.Add("user", value);               }
         }
         public static void odjava()
         {

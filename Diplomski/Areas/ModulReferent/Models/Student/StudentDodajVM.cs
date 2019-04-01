@@ -28,9 +28,13 @@ namespace Diplomski.Areas.ModulReferent.Models.Student
         [Required(ErrorMessage = "Lozinka je obavezno polje")]
         [StringLength(24, MinimumLength = 8, ErrorMessage = "Lozinka mora imati minimalno 8 znakova a maksimalno 24")]
         public string Lozinka { get; set; }
+        public string LozinkaHelper{ get; set; }
         public List<SelectListItem> semestriStavke { get; set; }
 
         public string SlikaPath { get; set; }
+        public string SlikaPathHelper { get; set; }
+        public string Poruka { get; set; }
+     
         public HttpPostedFileBase SlikaFile { get; set; }
 
       

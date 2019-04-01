@@ -1,0 +1,59 @@
+﻿@using Diplomski.Areas.ModulEdukatori.Models
+@model Diplomski.Areas.ModulEdukatori.Models.PrikaziAktivnostVM
+@using Diplomski.Helper
+<h2>Lista ispita</h2>
+<hr />
+<form>
+    <div class="form-inline" style="margin-bottom:20px;">
+        <label style="font-size:19px;font-weight:bold;margin-right:10px;">Predmeti:</label>
+
+        @Html.DropDownListFor(model => model.PredmetId, Model.predmeti, new { @class = "form-control", @onchange = "this.form.submit()" })
+
+    </div>
+
+
+</form>
+
+<table class="table table-hover" style="color:black;">
+    <thead>
+        <tr>
+            <th>Predmet</th>
+            <th>Naziv</th>
+            <th>Datum</th>
+            <th>Termin</th>
+            
+            @if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+            {
+                <th>Akcija</th>
+
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PrikaziAktivnostVM.AktivnostInfo x in Model.Aktivnosti)
+        {
+            <tr>
+                <td>@x.Predmet</td>
+                <td>@x.Naziv</td>
+                <td>@x.Datum.ToString("dd.MMMM.yyyy.")</td>
+                <td>@x.Pocetak.ToString("hh\\:mm") - @x.Kraj.ToString("hh\\:mm")</td>
+                
+                @if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+                {
+                    <td>
+                        <a href="/ModulEdukatori/Ispit/AktivirajIspit/?aktivnostId=@x.Id" class="btn btn-success" @(Model.IsAktivna == false ? "hidden" : "")>Aktiviraj</a>
+                        <a href="/ModulEdukatori/Ispit/SpisakStudenata/?aktivnostId=@x.Id" class="btn btn-info">Spisak studenata</a>
+                        <a href="/ModulEdukatori/Ispit/Otkazi/?aktivnostId=@x.Id" class="btn btn-danger" @(Model.IsAktivna == false ? "hidden" : "")>Otkaži</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+{
+    <a href="/ModulEdukatori/Ispit/Dodaj" class="btn btn-primary btn-lg" style="float:right">Dodaj ispit</a>
+
+}

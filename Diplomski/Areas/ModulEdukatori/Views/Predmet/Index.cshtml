@@ -1,0 +1,49 @@
+﻿@using Diplomski.Areas.ModulReferent.Models.Predmet
+
+@model Diplomski.Areas.ModulReferent.Models.Predmet.PredmetPrikaziVM
+
+<h2>Predmeti koje predaje @Model.Edukator</h2>
+<hr />
+<form>
+
+    <div class="form-inline" style="margin-bottom:20px;">
+       <label style="font-size:19px;font-weight:bold;margin-right:10px;">Semetri:</label>
+        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control",@onchange="this.form.submit()" })
+     
+    </div>
+
+</form>
+<div class="table-responsive">
+    <table class="table  table-hover" style="color:black;">
+        <thead>
+            <tr>
+                <th>Oznaka</th>
+                <th>Naziv</th>
+                <th>ECTS</th>
+                <th>Semestar</th>
+                <th>Broj studenata</th>
+                <th>Broj aktivnosti</th>
+                <th>Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (PredmetPrikaziVM.PredmetInfo x in Model.predmeti)
+            {
+                <tr>
+                    <td>@x.Oznaka</td>
+                    <td>@x.Naziv</td>
+                    <td>@x.ECTS</td>
+                    <td>@x.Semestar</td>
+                    <td>@x.BrojStudenata</td>
+                    <td>@x.BrojAktivnosti</td>
+                    <td>
+                        <a href="/modulEdukatori/Predmet/spisakStudenata/?predmetId=@x.Id" class="btn btn-info">Spisak studenata</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

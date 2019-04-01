@@ -1,0 +1,59 @@
+﻿@using Diplomski.Areas.ModulEdukatori.Models
+@model Diplomski.Areas.ModulEdukatori.Models.PrikaziAktivnostVM
+@using Diplomski.Helper
+<h2>Lista @(Model.IsAktivna == true ? "" : "završenih") aktivnosti </h2>
+<hr>
+<form>
+    <div class="form-inline" style="margin-bottom:20px;">
+        <label style="font-size:21px;font-weight:bold;margin-right:10px;">Predmeti:</label>
+        @Html.DropDownListFor(model => model.PredmetId, Model.predmeti, new { @class = "form-control",@onchange="this.form.submit()" })
+      
+    </div>
+
+
+</form>
+
+<table class="table table-hover" style="color:black;">
+    <thead>
+        <tr >
+            <th>Predmet</th>
+            <th>Naziv</th>
+            <th>Datum</th>
+            <th>Termin</th>
+            <th>Vrsta</th>
+            @if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+            {
+                <th>Akcija</th>
+
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PrikaziAktivnostVM.AktivnostInfo x in Model.Aktivnosti)
+        {
+            <tr class="@(x.VrstaAktivnost=="Ispit"?"table-warning":"")">
+                <td>@x.Predmet</td>
+                <td>@x.Naziv</td>
+                <td>@x.Datum.ToString("dd.MMMM.yyyy.")</td>
+                <td>@x.Pocetak.ToString("hh\\:mm") - @x.Kraj.ToString("hh\\:mm")</td>
+                <td>@x.VrstaAktivnost</td>
+
+                @if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+                {
+                    <td>
+                        <a href="/ModulEdukatori/Aktivnosti/AktivirajAktivnost/?aktivnostId=@x.Id" class="btn btn-success btn-sm" @(Model.IsAktivna==false?"hidden":"")>Aktiviraj</a>
+                        <a href="/ModulEdukatori/Aktivnosti/SpisakStudenata/?aktivnostId=@x.Id" class="btn btn-info btn-sm">Spisak studenata</a>
+                        <a href="/ModulEdukatori/Aktivnosti/Otkazi/?aktivnostId=@x.Id" class="btn btn-danger btn-sm" @(Model.IsAktivna==false?"hidden":"")>Otkaži</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@if (Autentifikacija.LogiraniKorisnik.Uloga.Naziv != "Student")
+{
+    <a href="/ModulEdukatori/Aktivnosti/Dodaj"class="btn btn-primary btn-lg" style="float:right" @(Model.IsAktivna==true?"":"hidden")>Dodaj aktivnost</a>
+
+}

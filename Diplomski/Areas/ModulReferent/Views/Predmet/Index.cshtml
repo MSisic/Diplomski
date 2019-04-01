@@ -2,44 +2,46 @@
 
 @model Diplomski.Areas.ModulReferent.Models.Predmet.PredmetPrikaziVM
 
-<h2>Predmeti na fakultetu informacijskih tehnologija</h2>
-
+<h2>Predmeti na Fakultetu informacijskih tehnologija</h2>
+<hr>
 <form>
 
-    <div class="form-inline">
-        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control" })
-        <input type="submit" value="Prikaži" class="btn btn-info" />
+    <div class="form-inline" style="margin-bottom:20px;"> 
+      <label style="font-weight:bold;font-size:21px;margin-right:10px;">Semestri:</label>
+        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control",@onchange="this.form.submit()" })
+
     </div>
 
 </form>
-
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Oznaka</th>
-            <th>Naziv</th>
-            <th>ECTS</th>
-            <th>Semestar</th>
-            <th>Detalji</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        @foreach (PredmetPrikaziVM.PredmetInfo x in Model.predmeti)
-        {
+<div class="table-responsive">
+    <table class="table  table-hover" style="text-align:center;color:black">
+        <thead>
             <tr>
-                <td>@x.Oznaka</td>
-                <td>@x.Naziv</td>
-
-                <td>@x.ECTS</td>
-                <td>@x.Semestar</td>
-                <td>
-                    <a href="/ModulReferent/Predmet/Detalji/?id=@x.Id" class="btn btn-info">Detalji</a>
-                    <a href="/ModulReferent/Predmet/Uredi/?predmetId=@x.Id" class="btn btn-info">Uredi</a>
-                </td>
+                <th>Oznaka</th>
+                <th>Naziv</th>
+                <th>ECTS</th>
+                <th>Semestar</th>
+                <th>Detalji</th>
             </tr>
-        }
-    </tbody>
-</table>
-<a href="/ModulReferent/Predmet/Dodaj" class="btn btn-primary">Dodaj predmet</a>
+        </thead>
+        <tbody>
+
+            @foreach (PredmetPrikaziVM.PredmetInfo x in Model.predmeti)
+            {
+                <tr>
+                    <td>@x.Oznaka</td>
+                    <td>@x.Naziv</td>
+
+                    <td>@x.ECTS</td>
+                    <td>@x.Semestar</td>
+                    <td>
+                        <a href="/ModulReferent/Predmet/Uredi/?predmetId=@x.Id" class="btn btn-primary btn-sm">Uredi</a>
+                        <a href="/ModulReferent/Predmet/Detalji/?id=@x.Id" class="btn btn-info btn-sm">Detalji</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <a href="/ModulReferent/Predmet/Dodaj" class="btn btn-primary btn-lg" style="float:right">Dodaj predmet</a>
 

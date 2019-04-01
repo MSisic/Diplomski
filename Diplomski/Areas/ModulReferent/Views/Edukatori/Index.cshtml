@@ -1,0 +1,44 @@
+﻿@using Diplomski.Areas.ModulReferent.Models.Edukatori
+@model Diplomski.Areas.ModulReferent.Models.Edukatori.EdukatoriPrikaziVM
+
+<h2>Edukatori na Fakultetu informacijskih tehnologija</h2>
+<hr>
+<form>
+    <div class="form-inline" style="margin-bottom:20px;">
+        <label style="font-weight:bold;font-size:21px;margin-right:10px;" >Uloga:</label>
+        @Html.DropDownListFor(model => model.UlogaId, Model.Uloge, new { @class = "form-control", @onchange = "this.form.submit()" })
+
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover" style="text-align:center; color:black">
+        <thead >
+            <tr>
+                <th>Titula</th>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Email</th>
+                <th>Uloga</th>
+                <th>Predmeti</th>
+            </tr>
+        </thead>
+        <tbody >
+            @foreach (EdukatoriPrikaziVM.EdukatoriInfo NO in Model.edukatori)
+            {
+                <tr >
+                    <td>@NO.Titula</td>
+                    <td>@NO.Ime</td>
+                    <td>@NO.Prezime</td>
+                    <td>@NO.Email</td>
+                    <td>@NO.Uloga</td>
+                    <td>
+                        <a href="/ModulReferent/edukatori/Uredi/?id=@NO.Id" class="btn btn-primary btn-sm">Uredi</a>
+                        <a href="/ModulReferent/edukatori/prikaziPredmete/?id=@NO.Id" class="btn btn-info btn-sm">Predmeti</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<a href="/ModulReferent/edukatori/Dodaj" class="btn btn-primary btn-lg" style="float:right">Dodaj edukatora</a>

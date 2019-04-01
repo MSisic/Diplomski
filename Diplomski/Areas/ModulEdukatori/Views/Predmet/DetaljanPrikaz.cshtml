@@ -1,0 +1,56 @@
+﻿@model Diplomski.Areas.ModulEdukatori.Models.PredmetStudentDetaljiVM
+@using Diplomski.Areas.ModulEdukatori.Models
+
+<div id="print">
+    <h1>Detaljan prikaz prisustva po aktivnostima iz predmeta @Model.Predmet za studenta @Model.Student</h1>
+    <hr />
+    <div class="table-responsive">
+        <table class="table table-hover " style="text-align:center;color:black">
+            <thead>
+                <tr>
+                    <th>Aktivnost</th>
+                    <th>Datum</th>
+                    <th>Prisustvo</th>
+                    <th>Vrijeme dolaska</th>
+                    <th>Vrijeme odlaska</th>
+                    <th >Postotak prisustva</th>
+                </tr>
+            </thead>
+            <tbody style="color:black">
+                @foreach (PredmetStudentDetaljiVM.AktivnostiInfo x in Model.Aktivnosti)
+                {
+                    <tr style="background:@(x.IsPrisustvovao==true?"lightgreen":"tomato")">
+
+                        <td>@x.Naziv</td>
+                        <td>@x.Datum.ToString("dd.MM.yyyy")</td>
+                        <td>@(x.IsPrisustvovao == true ? "DA" : "NE")</td>
+                        <td>@x.VrijemeDolaska.ToString("hh\\:mm")</td>
+                        <td>@x.VrijemeOdlaska.ToString("hh\\:mm")</td>
+                        <td>@x.PostotakPrisustva %</td>
+
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5"  style="text-align:end;font-weight:bold">Ukupan postotak pristusva</th>
+                    <th>@Model.UkupanPostotak %</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<button onclick="PrintRadGrid('print')" class="btn btn-lg btn-secondary" style="width:120px;float:right">Print</button>
+
+<script>
+    function PrintRadGrid(print) {
+
+        debugger;
+        var divToPrint = document.getElementById(print);
+        var newWin = window.open('PrintDiv', 'Print-Window', 'width=920,height=750,top=100,left=100');
+        newWin.document.open();
+        newWin.document.write('<html><title>Invitation Status</title><head><style>#in {display:none}</style><body   onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>

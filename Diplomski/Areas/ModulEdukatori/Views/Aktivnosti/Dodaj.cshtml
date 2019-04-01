@@ -1,0 +1,72 @@
+﻿@model Diplomski.Areas.ModulEdukatori.Models.DodajAktivnostVM
+
+
+
+
+<h2>Kreiranje Aktivnosti</h2>
+<hr />
+<form action="/ModulEdukatori/Aktivnosti/Spremi">
+    @Html.HiddenFor(model => model.Id)
+    <div class="container">
+        <div class="panel panel-primary">
+          
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="oznaka">Naziv aktivnosti:</label>
+                            @Html.TextBoxFor(model => model.Naziv, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Naziv)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="asistent">Vrsta aktivnosti:</label>
+                            @Html.DropDownListFor(model => model.VrstaAktivnostiId, Model.VrstaAktivnosti, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.VrstaAktivnostiId)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="asistent">Predmet:</label>
+                            @Html.DropDownListFor(model => model.PredajePredmetId, Model.PredajePredmet, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.VrstaAktivnostiId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class='col-md-4'>
+                        <div class="form-group">
+                            <label class="control-label">Datum</label>
+                            <div class='input-group date'>
+                                @Html.DropDownListFor(model => model.DatumiId, Model.Datumi, new { @class = "form-control" })
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="oznaka">Početak:</label>
+                            @Html.TextBoxFor(model => model.Pocetak, "{0:hh\\:mm}", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Pocetak)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="oznaka">Kraj:</label>
+                            @Html.TextBoxFor(model => model.Kraj, "{0:hh\\:mm}", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Kraj)
+                        </div>
+                    </div>
+                </div>
+
+             
+                <input type="submit" value="Spremi" class="btn btn-success btn-lg"  style="float:right;width:250px" />
+            </div>
+        </div>
+    </div>
+</form>

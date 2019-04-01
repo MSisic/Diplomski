@@ -1,0 +1,29 @@
+﻿@using Diplomski.Areas.ModulReferent.Models.Edukatori
+@model Diplomski.Areas.ModulReferent.Models.Edukatori.EdukatoriPredmetiPrikaziVM
+<h2>Predmeti koje predaje @Model.Edukator</h2>
+<hr />
+<div class="table-responsive">
+    <table class="table table-hover " style="text-align:center;color:black;margin-top:20px;">
+        <thead>
+            <tr>
+                <th>Oznaka</th>
+                <th>Predmet</th>
+                <th>ECTS</th>
+                <th>Semestar</th>
+                <th>Broj studenata</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (EdukatoriPredmetiPrikaziVM.PredmetiInfo x in Model.predmeti)
+            {
+                <tr>
+                    <td>@x.Oznaka</td>
+                    <td>@x.Naziv</td>
+                    <td>@x.ECTS</td>
+                    <td>@x.Semestar</td>
+                    <td>@x.BrojStudenta</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>

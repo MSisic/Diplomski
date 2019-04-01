@@ -1,84 +1,90 @@
 ﻿@using Diplomski.Models
 @model Diplomski.Areas.ModulReferent.Models.Student.StudentDodajVM
 
+<div>
 
+    <h2>Evidentiranje podataka o studentu</h2>
+    <hr>
+    @using (Html.BeginForm("Spremi", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
 
-<h2>Dodavanje studenta</h2>
-@using (Html.BeginForm("Spremi", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-  
-    @Html.HiddenFor(model => model.Id)
-
-    <div class="form-group  ">
-        <label for="ime">Ime:</label>
-        @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Ime)
-    </div>
-
-    <div class="form-group ">
-        <label for="prezime">Prezime:</label>
-        @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Prezime)
-
-    </div>
-
-    <div class="form-group ">
-        <label for="indeks">Broj indeksa:</label>
-        @Html.TextBoxFor(model => model.BrojDosijea, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.BrojDosijea)
-
-    </div>
-
-    <div class="form-group ">
-        <label for="rfid">RFID: </label>
-        @Html.TextBoxFor(model => model.RFID, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.RFID)
-
-    </div>
-
-    <div class="form-group ">
-        <label for="lozinka">Lozinka: </label>
-        @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", @type = "Password" })
-        @Html.ValidationMessageFor(model => model.Lozinka)
-
-    </div>
-
-    <div class="form-group ">
-        <label for="email">Email: </label>
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Email)
-
-    </div>
-
-
-    <div class="form-group ">
-        <label for="semestar">Semestar: </label>
-        @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.SemestarId)
-
-    </div>
-
-    <div class="form-group">
-        <label for="slika">Slika:</label>
-        <img id="output_image" style="width:240px; height:240px; border:1px solid #000;" />
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="file" name="SlikaFile" required accept="image/*" onchange="preview_image(event)">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.SlikaPathHelper)
+        @Html.HiddenFor(model => model.LozinkaHelper)
+        <div class="form-group  ">
+            <label for="ime">Ime:</label>
+            @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Ime)
         </div>
-    </div>
 
-    <div>
-        @Html.ValidationSummary()
-    </div>
+        <div class="form-group ">
+            <label for="prezime">Prezime:</label>
+            @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Prezime)
 
-    <div class="form-group">
-        <input type="submit" name="Spremi" value="Spremi" class="btn btn-primary" />
-    </div>
-}
+        </div>
+
+        <div class="form-group ">
+            <label for="indeks">Broj indeksa:</label>
+            @Html.TextBoxFor(model => model.BrojDosijea, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojDosijea)
+
+        </div>
+
+        <div class="form-group ">
+            <label for="rfid">RFID: </label>
+            @Html.TextBoxFor(model => model.RFID, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RFID)
+
+        </div>
+
+        <div class="form-group ">
+            <label for="lozinka">Lozinka: </label>
+            @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", @type = "Password" })
+            @Html.ValidationMessageFor(model => model.Lozinka)
+
+        </div>
+
+        <div class="form-group ">
+            <label for="email">Email: </label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+
+        </div>
 
 
+        <div class="form-group ">
+            <label for="semestar">Semestar: </label>
+            @Html.DropDownListFor(model => model.SemestarId, Model.semestriStavke, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SemestarId)
+
+        </div>
+
+        <div class="form-group">
+            <label for="slika">Slika:</label>
+            <img id="output_image" style="width:240px; height:240px;  border:1px solid #000;" class="rounded mx-auto d-block" src="@Model.SlikaPath" />
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10" id="slika">
+                <input type="file" name="SlikaFile" accept="image/*" onchange="preview_image(event)">
+                <label style="color:red">@Model.Poruka</label>
+            </div>
+        </div>
+
+        <div>
+            @Html.ValidationSummary()
+        </div>
+
+        <div class="form-group">
+            <input type="submit" name="Spremi" value="Spremi" class="btn btn-success btn-lg" style="float:right;width:220px" />
+
+        </div>
+        <br>
+    }
+
+</div>
 
 <script type='text/javascript'>
     function preview_image(event) {
@@ -89,6 +95,21 @@
 
         }
         reader.readAsDataURL(event.target.files[0]);
+    }
+    function sakrij() {
+      
+        var oznaceno = document.getElementById("customSwitches").value;
+        alert(oznaceno);
+        var slika = documen.getElementById("slika");
+        if (oznaceno == true) {
+            slika.hidden = "hidden";
+            alert("da");
+        }
+        if (oznaceno == false) {
+            slika.hidden = "hidden";
+            alert("ne");
+
+        }
     }
 </script>
 
